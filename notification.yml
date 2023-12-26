@@ -1,0 +1,60 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-deployment
+  labels:
+    app: notification 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+      - name: notification
+        image: notification:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8082
+        env:
+        - name: bookingService
+          value: booking-service
+        - name: paymentService
+          value: payment-service
+        - name: userService
+          value: user-service
+        - name: carService
+          value: car-service
+        - name: DB_URL
+          valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres-url
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key : USER_NAME
+        - name: DB_PWD 
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key : PASSWORD
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+spec:
+  selector:
+    app: notification 
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082 
