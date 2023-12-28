@@ -1,6 +1,7 @@
-package com.microservices.notification;
+package com.microservices.notification.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ public class Notification {
   private Long id_notification;
   private String userId;
   private String message;
-  private LocalDateTime sentTime;
+  private Date sentTime;
 
   public Long getId_notification() {
     return id_notification;
@@ -40,11 +41,11 @@ public class Notification {
     this.message = message;
   }
 
-  public LocalDateTime getSentTime() {
+  public Date getSentTime() {
     return sentTime;
   }
 
-  public void setSentTime(LocalDateTime sentTime) {
+  public void setSentTime(Date sentTime) {
     this.sentTime = sentTime;
   }
 }
